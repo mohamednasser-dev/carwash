@@ -109,7 +109,7 @@ use Illuminate\Http\Request;
     Route::get('/home/{lang}/{v}' , 'HomeController@gethome')->middleware('checkguest');
 
     // get home data
-    Route::get('/home-ads/{lang}/{v}' , 'HomeController@getHomeAds')->middleware('checkguest');
+    Route::get('/home_page/{lang}/{v}' , 'HomeController@home_page')->middleware('checkguest');
 
     //forum ...
     Route::get('/all_forum/{lang}/{v}' , 'ForumController@all_forum')->middleware('checkguest');
@@ -166,7 +166,8 @@ use Illuminate\Http\Request;
     Route::post('/ad/save_new_ad/{lang}/{v}' , 'ProductController@save_first_step');
     Route::post('/ad/save_second_step/{lang}/{v}' , 'ProductController@save_second_step');
 
-    Route::get('/ad/select_all_plans/{cat_id}/{lang}/{v}' , 'PlanController@select_all_plans');
+    Route::get('/plans/{cat_id}/{lang}/{v}' , 'PlanController@select_all_plans');
+    Route::get('/plans/details/{plan_id}/{lang}/{v}' , 'PlanController@plan_details');
     Route::get('/ad/save_third_step/{ad_id}/{plan_id}/{lang}/{v}' , 'ProductController@save_third_step');
 
     Route::get('/ad/save_third_step_with_money/{ad_id}/{plan_id}/{lang}/{v}' , 'ProductController@save_third_step_with_money');

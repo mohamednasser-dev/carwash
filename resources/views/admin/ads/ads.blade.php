@@ -29,18 +29,6 @@
                             {{ __('messages.on_the_top') }}
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="icon-contact-tab" data-toggle="tab" href="#icon-contact" role="tab"
-                           aria-controls="icon-contact" aria-selected="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="feather feather-arrow-down">
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <polyline points="19 12 12 19 5 12"></polyline>
-                            </svg>
-                            {{ __('messages.on_the_bottom') }}
-                        </a>
-                    </li>
                 </ul>
                 <div class="tab-content" id="iconTabContent-1">
                     <div class="tab-pane fade show active" id="icon-home" role="tabpanel"
@@ -89,54 +77,8 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="icon-contact" role="tabpanel" aria-labelledby="icon-contact-tab">
-                        <div class="table-responsive">
-                            <table id="html5-extension2" class="table table-hover non-hover" style="width:100%">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th class="text-center">{{ __('messages.image') }}</th>
-                                    <th class="text-center">{{ __('messages.details') }}</th>
-                                    @if(Auth::user()->update_data)
-                                        <th class="text-center">{{ __('messages.edit') }}</th>
-                                    @endif
-                                    @if(Auth::user()->delete_data)
-                                        <th class="text-center">{{ __('messages.delete') }}</th>
-                                    @endif
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php $i = 1; ?>
-                                @foreach ($data['ads_bottom'] as $ad)
-                                    <tr>
-                                        <td><?=$i;?></td>
-                                        <td class="text-center"><img src="{{image_cloudinary_url()}}{{ $ad->image }}"/>
-                                        </td>
-
-                                        <td class="text-center blue-color"><a
-                                                href="/admin-panel/ads/details/{{ $ad->id }}"><i class="far fa-eye"></i></a>
-                                        </td>
-                                        @if(Auth::user()->update_data)
-                                            <td class="text-center blue-color"><a
-                                                    href="/admin-panel/ads/edit/{{ $ad->id }}"><i
-                                                        class="far fa-edit"></i></a></td>
-                                        @endif
-                                        @if(Auth::user()->delete_data)
-                                            <td class="text-center blue-color"><a
-                                                    onclick="return confirm('Are you sure you want to delete this item?');"
-                                                    href="/admin-panel/ads/delete/{{ $ad->id }}"><i
-                                                        class="far fa-trash-alt"></i></a></td>
-                                        @endif
-                                        <?php $i++; ?>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection

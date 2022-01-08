@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Plan_details;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
@@ -99,27 +101,27 @@ class PlanController extends Controller
         return "Please wait ...";
     }
 
-    //Nasser Code
     public function select_all_plans(Request $request,$cat_id) {
         $lang = $request->lang;
-            $data['plans'] = Plan::with('Details')
+        Session::put('api_lang', $lang);
+            $data = Plan::with('Details')
                 ->where('cat_id' , $cat_id)
                 ->orwhere('cat_id' , 'all')
                 ->where('status' , 'show')
                 ->where('deleted','0')
-                ->select('id' ,'title_ar as title' , 'title_en' ,'cat_id','price')
-                ->get()
-                ->map(function($plans) use ($lang) {
-                    if($lang == 'en'){
-                        foreach($plans->Details as $plan_detail){
-                            $plan_detail->title = $plan_detail->title_en;
-                        }
-                        $plans->title = $plans->title_en;
-                    }
-                    return $plans;
-                });
+                ->select('id' ,'title_'.$lang.' as title','price')
+                ->get();
         $response = APIHelpers::createApiResponse(false , 200 , '' , '' , $data , $request->lang);
         return response()->json($response , 200);
     }
-
+    public function plan_details(Request $request,$plan_id) {
+        $lang = $request->lang;
+        Session::put('api_lang', $lang);
+            $data = Plan_details::
+                where('plan_id' , $plan_id)->where('status','show')
+                ->select('id' ,'title_'.$lang.' as title')
+                ->get();
+        $response = APIHelpers::createApiResponse(false , 200 , '' , '' , $data , $request->lang);
+        return response()->json($response , 200);
+    }
 }

@@ -29,7 +29,7 @@
                                     </div>
                                 </section>
                             </div>
-                            <div id="defaultAccordionOne" class="collapse" aria-labelledby="..."
+                            <div id="defaultAccordionOne"  aria-labelledby="..." aria-expanded="true"
                                  data-parent="#toggleAccordion">
                                 <div class="card-body">
                                     <div class="form-group mb-4">
@@ -46,6 +46,13 @@
                                                id="app_name_ar"
                                                placeholder="{{ __('messages.app_name') }}"
                                                value="{{$data['setting']['app_name_ar']}}">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="app_name_ar">{{ __('messages.cars_service_num') }}</label>
+                                        <input required type="text" name="cars_service_num" class="form-control"
+                                               id="cars_service_num"
+                                               placeholder="{{ __('messages.cars_service_num') }}"
+                                               value="{{$data['setting']['cars_service_num']}}">
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="email">{{ __('messages.email') }}</label>
@@ -112,30 +119,6 @@
                                 </div>
                             </div>
                         </div>
-{{--                        <div class="card">--}}
-{{--                            <div class="card-header" id="...">--}}
-{{--                                <section class="mb-0 mt-0">--}}
-{{--                                    <div role="menu" class="collapsed" data-toggle="collapse"--}}
-{{--                                         data-target="#defaultAccordionThree" aria-expanded="true"--}}
-{{--                                         aria-controls="defaultAccordionThree">--}}
-{{--                                        {{ __('messages.ad_balance') }}--}}
-{{--                                        <div class="icons">--}}
-{{--                                            <svg> ...</svg>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </section>--}}
-{{--                            </div>--}}
-{{--                            <div id="defaultAccordionThree" class="collapse" aria-labelledby="..."--}}
-{{--                                 data-parent="#toggleAccordion">--}}
-{{--                                <div class="card-body">--}}
-{{--                                    <div class="form-group mb-4">--}}
-{{--                                        <label for="map_url">{{ __('messages.expier_days') }}</label>--}}
-{{--                                        <input type="number" min="1" name="expier_days" class="form-control" id="expier_days"--}}
-{{--                                               value="{{$data['setting']['expier_days']}}">--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                     </div>
                     <input type="submit" value="{{ __('messages.edit') }}" class="btn btn-primary">
                 </form>

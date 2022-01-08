@@ -50,52 +50,6 @@
                         </ul>
                     </li>
                 @endif
-
-                @if(in_array(13 , Auth::user()->custom['admin_permission']))
-                    <li class="menu products">
-                        <a href="#products" data-toggle="collapse" aria-expanded="false"
-                           class="dropdown-toggle first-link">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-lock">
-                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                </svg>
-                                <span>{{ __('messages.products') }}</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="collapse submenu list-unstyled" id="products" data-parent="#accordionExample">
-                            <li class="show">
-                                <a href="/admin-panel/products/show">{{ __('messages.show') }}</a>
-                            </li>
-{{--                            <li class="our_offers">--}}
-{{--                                <a href="/admin-panel/products/our_offers">{{ __('messages.our_offers') }}</a>--}}
-{{--                            </li>--}}
-{{--                            <li class="choose_to_you">--}}
-{{--                                <a href="/admin-panel/products/choose_to_you">{{ __('messages.choose_to_you') }}</a>--}}
-{{--                            </li>--}}
-                        </ul>
-                    </li>
-                @endif
-                @if(in_array(16 , Auth::user()->custom['admin_permission']))
-                    <li class="menu mazad_times">
-                        <a href="{{route('mazad_times.index')}}" class="dropdown-toggle first-link">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                                <span>{{ __('messages.mazad_times') }}</span>
-                            </div>
-                        </a>
-                    </li>
-                @endif
-
                 @if(in_array(4 , Auth::user()->custom['admin_permission']))
                     <li class="menu categories">
                         <a href="/admin-panel/categories/show" class="dropdown-toggle first-link">
@@ -153,46 +107,12 @@
                             <li class="show">
                                 <a href="/admin-panel/ads/show">{{ __('messages.main_ads_second') }}</a>
                             </li>
-{{--                            <li class="show">--}}
-{{--                                <a href="/admin-panel/categories_ads">{{ __('messages.categories_ads') }}</a>--}}
-{{--                            </li>--}}
                             <li class="">
                                 <a href="{{route('main_ads.index')}}" @if(Route::current()->getName() == 'main_ads.index') style="color: #1b55e2; font-weight: 600;"  @endif >{{ __('messages.main_ads') }}</a>
                             </li>
                         </ul>
                     </li>
                 @endif
-                    <li class="menu forum_categories">
-                        <a href="{{route('forum_categories.index')}}" class="dropdown-toggle first-link">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                                <span>{{ __('messages.forum_categories') }}</span>
-                            </div>
-                        </a>
-                    </li>
-                @if(in_array(14 , Auth::user()->custom['admin_permission']))
-
-                        <li class="menu forums">
-                            <a href="{{route('forums.index')}}" class="dropdown-toggle first-link">
-                                <div class="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                                    <span>{{ __('messages.forum') }}</span>
-                                </div>
-                            </a>
-                        </li>
-                @endif
-
-
-{{--                @if(in_array(17 , Auth::user()->custom['admin_permission']))--}}
-{{--                    <li class="menu payments">--}}
-{{--                        <a href="{{route('payments.index')}}" class="dropdown-toggle first-link">--}}
-{{--                            <div class="">--}}
-{{--                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>--}}
-{{--                                <span>{{ __('messages.payments') }}</span>--}}
-{{--                            </div>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                @endif--}}
                 @if(in_array(5 , Auth::user()->custom['admin_permission']))
                     <li class="menu contact_us">
                         <a href="/admin-panel/contact_us" class="dropdown-toggle first-link">

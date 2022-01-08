@@ -218,69 +218,6 @@ class CategoryController extends Controller
     {
         $lang = $request->lang;
         $data['sub_categories'] = SubCategory::where('deleted', 0)->where('category_id', $request->category_id)->select('id', 'image', 'title_' . $lang . ' as title')->orderBy('sort', 'asc')->get()->toArray();
-
-        $data['sub_category_array'] = SubCategory::where('category_id', $request->category_id)->select('id', 'title_' . $lang . ' as title')->where('deleted', 0)->orderBy('sort', 'asc')->get();
-        $data['category'] = Category::select('id', 'title_en as title')->find($request->category_id);
-
-        for ($i = 0; $i < count($data['sub_category_array']); $i++) {
-            $data['sub_category_array'][$i]['selected'] = false;
-        }
-
-        for ($i = 0; $i < count($data['sub_categories']); $i++) {
-            $subTwoCats = SubTwoCategory::where('sub_category_id', $data['sub_categories'][$i]['id'])->where('deleted', 0)->select('id')->first();
-
-            if ($subTwoCats != null) {
-                $data['sub_categories'][$i]['next_level'] = true;
-            } else {
-                $data['sub_categories'][$i]['next_level'] = false;
-            }
-
-
-            if ($data['sub_categories'][$i]['next_level'] == true) {
-                // check after this level layers
-                $data['sub_next_categories'] = SubTwoCategory::where('deleted', 0)->where('sub_category_id', $data['sub_categories'][$i]['id'])->select('id', 'image', 'title_' . $lang . ' as title')->orderBy('sort', 'asc')->get();
-                $data_ids = SubTwoCategory::where('deleted', 0)->where('sub_category_id', $data['sub_categories'][$i]['id'])->select('id')->get()->toArray();
-                $subFiveCats = SubThreeCategory::whereIn('sub_category_id', $data_ids)->where('deleted', 0)->select('id', 'deleted')->get();
-                if (count($subFiveCats) == 0) {
-                    $data['sub_categories'][$i]['next_level'] = false;
-                } else {
-                    $data['sub_categories'][$i]['next_level'] = true;
-                    break;
-                }
-                //End check
-            }
-        }
-        array_unshift($data['sub_categories']);
-
-        $lang = $request->lang;
-        $products = Product::where('status', 1)->where('publish', 'Y')->where('deleted', 0)->where('category_id', $request->category_id)->select('id', 'title', 'price', 'main_image as image', 'created_at', 'pin')->orderBy('pin', 'DESC')->orderBy('created_at', 'desc')->simplePaginate(12);
-        for ($i = 0; $i < count($products); $i++) {
-            $products[$i]['price'] = number_format((float)($products[$i]['price']), 3);
-            $views = Product_view::where('product_id', $products[$i]['id'])->get()->count();
-            $products[$i]['views'] = $views;
-            $user = auth()->user();
-            if ($user) {
-                $favorite = Favorite::where('user_id', $user->id)->where('type', 'product')->where('product_id', $products[$i]['id'])->first();
-                if ($favorite) {
-                    $products[$i]['favorite'] = true;
-                } else {
-                    $products[$i]['favorite'] = false;
-                }
-
-                $conversation = Participant::where('ad_product_id', $products[$i]['id'])->where('user_id', $user->id)->first();
-                if ($conversation == null) {
-                    $products[$i]['conversation_id'] = 0;
-                } else {
-                    $products[$i]['conversation_id'] = $conversation->conversation_id;
-                }
-            } else {
-                $products[$i]['favorite'] = false;
-                $products[$i]['conversation_id'] = 0;
-            }
-            $products[$i]['time'] = APIHelpers::get_month_day($products[$i]['created_at'], $lang);
-        }
-
-        $data['products'] = $products;
         $response = APIHelpers::createApiResponse(false, 200, '', '', $data, $request->lang);
         return response()->json($response, 200);
     }

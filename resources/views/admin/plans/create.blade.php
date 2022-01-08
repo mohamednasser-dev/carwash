@@ -1,120 +1,149 @@
 @extends('admin.app')
 
-@section('title' , __('messages.add_plan'))
+@section('title' , __('messages.packages'))
 
 @section('content')
+    <h3>
+        {{ __('messages.packages_category') }}
+        @if(app()->getLocale() == 'ar')
+            ( {{ $category->title_ar }} )
+        @else
+        ( {{  $category->title_ar }} )
+        @endif
+    </h3>
     <div class="col-lg-12 col-12 layout-spacing">
-        <div class="statbox widget box box-shadow">
-            <div class="widget-header">
-                <div class="row">
-                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>{{ __('messages.add_plan') }}</h4>
-                 </div>
+        <div id="toggleAccordion">
+            <div class="card">
+                <div class="card-header" id="...">
+                    <section class="mb-0 mt-0">
+                        <div role="menu" class="collapsed" data-toggle="collapse"
+                             data-target="#defaultAccordionOne" aria-expanded="true"
+                             aria-controls="defaultAccordionOne">
+                            {{ __('messages.add_plan') }}
+                            <div class="icons">
+                                <svg> ...</svg>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="defaultAccordionOne" class="collapse" aria-labelledby="..."
+                     data-parent="#toggleAccordion">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>{{ __('messages.package_data') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="{{route('plans.store')}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="cat_id" value="{{$category->id}}">
+                            <div class="form-group mb-4">
+                                <label for="plan_price">{{ __('messages.plan_name_ar') }}</label>
+                                <input type="text" name="title_ar" class="form-control">
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="plan_price">{{ __('messages.plan_name_en') }}</label>
+                                <input required type="text" name="title_en" class="form-control">
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="plan_price">{{ __('messages.plan_price') }}</label>
+                                <input required type="number" name="price" class="form-control" id="plan_price"
+                                       step="any" min="0">
+                            </div>
+                            <div class="form-group row">
+                                <label for="plan_price">{{ __('messages.package_details') }}</label>
+                                <div class="card-body parent" style='text-align:right' id="parent">
+                                    <button type='button' value='Add Button' id='addButton' class="btn btn-primary">
+                                        <i class="fa fa-plus"></i></button>
+                                    <div class="panel" style='text-align:right'></div>
+                                </div>
+                            </div>
+                            <input type="submit" value="{{ __('messages.add') }}" class="btn btn-success">
+                        </form>
+                    </div>
+
+                </div>
             </div>
         </div>
-        <form action="{{route('plans.store')}}" method="post" enctype="multipart/form-data" >
-            @csrf
-            <div class="form-group mb-4">
-                <label for="plan_price">{{ __('messages.plan_name_ar') }}</label>
-                <input type="text" name="title_ar" class="form-control" >
-            </div>
-            <div class="form-group mb-4">
-                <label for="plan_price">{{ __('messages.plan_name_en') }}</label>
-                <input required type="text" name="title_en" class="form-control" >
-            </div>
-            <div class="form-group mr-1">
-                @php $cats = \App\Category::where('deleted','0')->get(); @endphp
-                <label for="plan_price">{{ __('messages.category') }}</label>
-                <select name="cat_id" class="form-control" id="exampleFormControlSelect1">
-                    <option value="all"> {{ __('messages.all') }}</option>
-                    @foreach($cats as $cat)
-                        <option value="{{$cat->id}}">
-                            {{ app()->getLocale() == 'en' ? $cat->title_en : $cat->title_ar }}
-                        </option>
+    </div>
+    <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+                <table id="html5-extension" class="table table-hover non-hover" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th class="text-center blue-color">Id</th>
+                        <th class="text-center blue-color">{{ __('messages.plane_name') }}</th>
+                        <th class="text-center blue-color">{{ __('messages.plan_price') }}</th>
+                        <th class="text-center blue-color">{{ __('messages.view') }}</th>
+                        <th class="text-center blue-color">{{ __('messages.details') }}</th>
+                        @if(Auth::user()->update_data)
+                            <th class="text-center">{{ __('messages.edit') }}</th>
+                        @endif
+                        @if(Auth::user()->delete_data)
+                            <th class="text-center">{{ __('messages.delete') }}</th>
+                        @endif
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php $i = 1; ?>
+                    @foreach ($data as $plan)
+                        <tr>
+                            <td class="text-center blue-color"><?=$i;?></td>
+                            <td class="text-center blue-color">{{ app()->getLocale() == 'en' ? $plan->title_en : $plan->title_ar }}</td>
+                            <td class="text-center blue-color">{{ $plan->price }} {{ __('messages.dinar') }}</td>
+                            <td class="text-center">
+                                <div class="switch">
+                                    <label>
+                                        <input onchange="update_status(this)" value="{{ $plan->id }}"
+                                               type="checkbox" <?php if ($plan->status == 'show') echo "checked";?> >
+                                        <span class="lever switch-col-indigo"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="text-center blue-color"><a href="{{ route('plans.details', $plan->id) }}"><i
+                                        class="far fa-eye"></i></a></td>
+                            @if(Auth::user()->update_data)
+                                <td class="text-center blue-color"><a href="{{ route('plans.edit', $plan->id) }}"><i
+                                            class="far fa-edit"></i></a></td>
+                            @endif
+                            @if(Auth::user()->delete_data)
+                                <td class="text-center blue-color"><a
+                                        onclick="return confirm('{{ __('messages.are_you_sure') }}');"
+                                        href="{{ route('delete.plan', $plan->id) }}"><i
+                                            class="far fa-trash-alt"></i></a></td>
+                            @endif
+                            <?php $i++; ?>
+                        </tr>
                     @endforeach
-                </select>
+                    </tbody>
+                </table>
             </div>
-            <div class="form-group mb-4">
-                <label for="plan_price">{{ __('messages.plan_price') }}</label>
-                <input required type="number" name="price" class="form-control" id="plan_price"  step="any" min="0">
-            </div>
-            <div class="form-group mb-4">
-                <label for="plan_price">{{ __('messages.publish_day_num') }}</label>
-                <input type="number" name="day_num" class="form-control" id="plan_price" min="0">
-            </div>
-            <div class="form-group row" >
-                <div class="col-md-3">
-                    <label for="plan_price"> &nbsp; </label>
-                    <div class="form-check pl-0">
-                        <div class="custom-control custom-checkbox checkbox-info">
-                            <input type="checkbox" class="custom-control-input" name="re_post" value="re_post" id="re_post_id">
-                            <label class="custom-control-label" for="re_post_id">{{ __('messages.re_post') }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3" id="re_post1_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.name_ar') }}</label>
-                    <input  type="text" name="re_post_title_ar"  class="form-control" value="اعادة نشرة فى المكان الاول كل 8 أيام">
-                </div>
-                <div class="col-md-3" id="re_post2_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.name_en') }}</label>
-                    <input  type="text" name="re_post_title_en"  class="form-control" value="Republish every 8 days">
-                </div>
-                <div class="col-md-3" id="re_post3_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.days_num') }}</label>
-                    <input  type="number" name="re_post_days" class="form-control" value="8" min="0">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-3">
-                    <label for="plan_price"> &nbsp; </label>
-                    <div class="form-check pl-0">
-                        <div class="custom-control custom-checkbox checkbox-info">
-                            <input type="checkbox" class="custom-control-input" name="pin" value="pin" id="pin_id">
-                            <label class="custom-control-label" for="pin_id">{{ __('messages.pin_it') }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3" id="pin_it1_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.name_ar') }}</label>
-                    <input  type="text" name="pin_it_title_ar"  class="form-control" value="يتم تثبيته فى الاعلى لمدة 72 ساعة">
-                </div>
-                <div class="col-md-3" id="pin_it2_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.name_en') }}</label>
-                    <input  type="text" name="pin_it_title_en"  class="form-control" value="It is pined on top for 72 hours">
-                </div>
-                <div class="col-md-3" id="pin_it3_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.days_num') }}</label>
-                    <input  type="number" name="pin_it_hours" class="form-control" value="72" min="0">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-3">
-                    <label for="plan_price"> &nbsp; </label>
-                    <div class="form-check pl-0">
-                        <div class="custom-control custom-checkbox checkbox-info">
-                            <input type="checkbox" class="custom-control-input" name="special" value="special" id="special_id">
-                            <label class="custom-control-label" for="special_id">{{ __('messages.add_to_spicial') }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3" id="special1_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.name_ar') }}</label>
-                    <input  type="text" name="special_title_ar"  class="form-control" value="يتم أظهار الاعلان فى القسم المميز ل 10 ايام">
-                </div>
-                <div class="col-md-3" id="special2_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.name_en') }}</label>
-                    <input  type="text" name="special_title_en"  class="form-control" value="The ad will appear in the special section fot 10 days">
-                </div>
-                <div class="col-md-3" id="special3_cont" style="display:none;">
-                    <label for="plan_price">{{ __('messages.days_num') }}</label>
-                    <input  type="number" name="special_hours" class="form-control" value="10" min="0">
-                </div>
-            </div>
-            <input type="submit" value="{{ __('messages.add') }}" class="btn btn-primary">
-        </form>
+        </div>
     </div>
 @endsection
 @section('scripts')
     <script src="/admin/assets/js/plans.js"></script>
+    <script>
+        $(document).ready(function () {
+            var i = 0;
+            $("#addButton").click(function () {
+                var options = '';
+                var html = '';
+                html += ' <div id="" class="form-group row">';
+                html += "<div class='col-sm-6'>" +
+                    "<input  name='rows[" + i + "][title_ar]' class='form-control' type='text' step ='0.01'  placeholder='ادخل اسم التفاصيل بالعربية'>" +
+                    "</div>" +
+                    "<div class='col-sm-6'>" +
+                    "<input   name='rows[" + i + "][title_en]' class='form-control' type='text' step ='0.01'  placeholder='ادخل اسم التفاصيل بالانجليزية'>" +
+                    "</div>" +
+                    "</hr>" +
+                    "</div>";
+                $('#parent').append(html);
+                i++;
+            });
+        });
+    </script>
 @endsection

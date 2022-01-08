@@ -38,6 +38,7 @@ class SettingController extends AdminController{
         $setting->facebook = $request->facebook;
         $setting->twitter = $request->twitter;
         $setting->snap_chat = $request->snap_chat;
+        $setting->cars_service_num = $request->cars_service_num;
 //        $setting->expier_days = $request->expier_days;
 		$setting->save();
         return  back();
