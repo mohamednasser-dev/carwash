@@ -82,6 +82,22 @@
                         </a>
                     </li>
                 @endif
+                @if(in_array(19 , Auth::user()->custom['admin_permission']))
+                    <li class="menu cities">
+                        <a href="{{route('job_times.index')}}" class="dropdown-toggle first-link">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-map">
+                                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                                    <line x1="8" y1="2" x2="8" y2="18"></line>
+                                    <line x1="16" y1="6" x2="16" y2="22"></line>
+                                </svg>
+                                <span>{{ __('messages.times_of_work') }}</span>
+                            </div>
+                        </a>
+                    </li>
+                @endif
                 @if(in_array(3 , Auth::user()->custom['admin_permission']))
                     <li class="menu ads main_ads">
                         <a href="#ads" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle first-link">
@@ -108,7 +124,8 @@
                                 <a href="/admin-panel/ads/show">{{ __('messages.main_ads_second') }}</a>
                             </li>
                             <li class="">
-                                <a href="{{route('main_ads.index')}}" @if(Route::current()->getName() == 'main_ads.index') style="color: #1b55e2; font-weight: 600;"  @endif >{{ __('messages.main_ads') }}</a>
+                                <a href="{{route('main_ads.index')}}"
+                                   @if(Route::current()->getName() == 'main_ads.index') style="color: #1b55e2; font-weight: 600;" @endif >{{ __('messages.main_ads') }}</a>
                             </li>
                         </ul>
                     </li>
@@ -228,21 +245,21 @@
                     </li>
                 @endif
 
-{{--                @if(in_array(8 , Auth::user()->custom['admin_permission']))--}}
-{{--                    <li class="menu meta_tags">--}}
-{{--                        <a href="/admin-panel/meta_tags" class="dropdown-toggle first-link">--}}
-{{--                            <div class="">--}}
-{{--                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"--}}
-{{--                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"--}}
-{{--                                     stroke-linejoin="round" class="feather feather-search">--}}
-{{--                                    <circle cx="11" cy="11" r="8"></circle>--}}
-{{--                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>--}}
-{{--                                </svg>--}}
-{{--                                <span>{{ __('messages.meta_tags') }}</span>--}}
-{{--                            </div>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                @endif--}}
+                {{--                @if(in_array(8 , Auth::user()->custom['admin_permission']))--}}
+                {{--                    <li class="menu meta_tags">--}}
+                {{--                        <a href="/admin-panel/meta_tags" class="dropdown-toggle first-link">--}}
+                {{--                            <div class="">--}}
+                {{--                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"--}}
+                {{--                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"--}}
+                {{--                                     stroke-linejoin="round" class="feather feather-search">--}}
+                {{--                                    <circle cx="11" cy="11" r="8"></circle>--}}
+                {{--                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>--}}
+                {{--                                </svg>--}}
+                {{--                                <span>{{ __('messages.meta_tags') }}</span>--}}
+                {{--                            </div>--}}
+                {{--                        </a>--}}
+                {{--                    </li>--}}
+                {{--                @endif--}}
 
                 @if(in_array(9 , Auth::user()->custom['admin_permission']))
                     <li class="menu managers">

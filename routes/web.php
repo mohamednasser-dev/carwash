@@ -87,6 +87,7 @@ Route::group(['middleware'=>'language','prefix' => "admin-panel",'namespace' => 
         Route::get('fetchproducts/{userId}' , 'Ads\AdController@fetch_products')->name("products.fetch");
     });
     Route::resource('payments' , 'PaymentsController');
+    Route::resource('job_times' , 'JobTimesController');
     Route::resource('cities' , 'CityController');
     Route::get('/cities/delete/{id}' , 'CityController@destroy')->name('delete.cities');
     Route::post('/cities/update/{id}' , 'CityController@update')->name('cities.update');

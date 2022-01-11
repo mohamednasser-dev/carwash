@@ -1,6 +1,18 @@
 <?php
 return [
     //new
+    "save_s" => "تم الحفظ بنجاح",
+    "save" => "حفظ",
+    "from" => "من",
+    "to" => "إلى",
+    "times_of_work" => "أوقات العمل",
+    "saturday" => "السبت",
+    "sunday" => "الأحد",
+    "monday" => "الإثنين",
+    "tuesday" => "الثلاثاء",
+    "wednesday" => "الأربعاء",
+    "thursday" => "الخميس",
+    "friday" => "الجمعة",
     'cars_service_num' => "عدد سيارات الخدمة",
     'package_details' => "تفاصيل الباقة",
     'packages_category' => "باقات القسم",

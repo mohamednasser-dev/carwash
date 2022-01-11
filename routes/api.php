@@ -241,5 +241,7 @@ use Illuminate\Http\Request;
     Route::get('/chat/search_conversation/{search}/{lang}/{v}' , 'ChatController@search_conversation');
     Route::get('/chat/make_read/{message_id}/{lang}/{v}' , 'ChatController@make_read');
 
+    Route::get('/day/times/{lang}/{v}' , 'OrderController@day_times');
+
 
 
