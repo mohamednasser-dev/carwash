@@ -26,11 +26,10 @@ class OrderController extends Controller
     public function day_times(Request $request){
         $request->selected_date;
 
-        $day = date('T', strtotime($request->selected_date));
+        $day = date('w', strtotime($request->selected_date));
 //        $day = Carbon::createFromFormat('Y/m/d', $request->selected_date)->format('l');
 
-
-        $data = DayTime::where('day',$day)->select('id' , 'time_from','time_to' )->get();
+        $data = DayTime::where('day',$request->selected_date)->select('id' , 'time_from','time_to' )->get();
         $response = APIHelpers::createApiResponse(false , 200 ,  '', '' , $data, $request->lang );
         return response()->json($response , 200);
     }
