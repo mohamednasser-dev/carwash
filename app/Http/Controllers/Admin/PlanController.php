@@ -29,6 +29,7 @@ class PlanController extends AdminController
                 'title_ar' => 'required',
                 'title_en' => 'required',
                 'cat_id' => 'required',
+                'work_hours' => 'required|numeric',
                 'price' => 'required|numeric'
             ]);
         $plan = Plan::create($data);

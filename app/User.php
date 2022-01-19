@@ -25,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'free_balance',
         'payed_balance',
         'watsapp',
+        'main_address_id',
         'image'
       ];
     use Notifiable;

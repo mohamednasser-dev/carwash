@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DayTime;
-use App\Plan_details;
+use App\OrderDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -24,16 +24,67 @@ class OrderController extends Controller
     }
 
     public function day_times(Request $request){
-        $request->selected_date;
+        $now = Carbon::now()->format('Y-m-d');
+        $validator = Validator::make($request->all() , [
+            'selected_date' => 'required|date_format:Y-m-d|after_or_equal:'.$now,
+            'plan_id' => 'required|exists:plans,id',
+        ]);
+
+        if($validator->fails()) {
+            $response = APIHelpers::createApiResponse(true , 406 ,  $validator->errors()->first(), $validator->errors()->first() , null, $request->lang );
+            return response()->json($response , 406);
+        }
 
         $day = date('w', strtotime($request->selected_date));
-//        $day = Carbon::createFromFormat('Y/m/d', $request->selected_date)->format('l');
-
-        $data = DayTime::where('day',$request->selected_date)->select('id' , 'time_from','time_to' )->get();
+        $data['plan_info'] = Plan::findOrFail($request->plan_id);
+        $data['available_times'] = DayTime::where('day',$day)->select('id' , 'time_from','time_to' )->get();
         $response = APIHelpers::createApiResponse(false , 200 ,  '', '' , $data, $request->lang );
         return response()->json($response , 200);
     }
 
+    public function add_to_cart(Request $request){
+        $now = Carbon::now()->format('Y-m-d');
+        $data = $request->all();
+        $validator = Validator::make($request->all() , [
+            'order_date' => 'required|date_format:Y-m-d|after_or_equal:'.$now,
+            'category_id' => 'required|exists:categories,id',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
+            'plan_id' => 'required|exists:plans,id',
+            'address_id' => 'required|exists:user_addresses,id',
+            'selected_times' => 'required|array',
+        ]);
+        if($validator->fails()) {
+            $response = APIHelpers::createApiResponse(true , 406 ,  $validator->errors()->first(), $validator->errors()->first() , null, $request->lang );
+            return response()->json($response , 406);
+        }
+        $user = auth()->user();
+        if($user) {
+            if ($user->active == 0) {
+                $response = APIHelpers::createApiResponse(true, 406, 'تم حظر حسابك', 'تم حظر حسابك', null, $request->lang);
+                return response()->json($response, 406);
+            }
+            $input['user_id'] = $user->id;
+            unset($data['selected_times']);
+            $input['order_date'] = $request->order_date;
+            $input['category_id'] = $request->category_id;
+            $input['sub_category_id'] = $request->sub_category_id;
+            $input['plan_id'] = $request->plan_id;
+            $input['address_id'] = $request->address_id;
+            OrderDetail::create($input);
+            $response = APIHelpers::createApiResponse(false, 200, '', '', $data, $request->lang);
+            return response()->json($response, 200);
+        }else{
+            $response = APIHelpers::createApiResponse(true, 406, 'you should login first', 'يجب تسجيل الدخول اولا', null, $request->lang);
+            return response()->json($response, 406);
+        }
+    }
+
+    public function get_cart(Request $request){
+        $user = auth()->user();
+        $data = OrderDetail::where('user_id',$user->id)->get();
+        $response = APIHelpers::createApiResponse(false , 200 ,  '', '' , $data, $request->lang );
+        return response()->json($response , 200);
+    }
     public function getpricing(Request $request){
         $plans = Plan::select('id' , 'ads_count' , 'price')->get();
         $response = APIHelpers::createApiResponse(false , 200 ,  '', '' , $plans, $request->lang );

@@ -48,6 +48,10 @@
                                 <input required type="text" name="title_en" class="form-control">
                             </div>
                             <div class="form-group mb-4">
+                                <label for="plan_price">{{ __('messages.work_hours') }}</label>
+                                <input required type="number" name="work_hours" value="1"  class="form-control" id="work_hours" min="1">
+                            </div>
+                            <div class="form-group mb-4">
                                 <label for="plan_price">{{ __('messages.plan_price') }}</label>
                                 <input required type="number" name="price" class="form-control" id="plan_price"
                                        step="any" min="0">

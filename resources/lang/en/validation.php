@@ -162,6 +162,7 @@ return [
         "special_title_ar"=>'The name of the featured ads section in Arabic',
         "special_title_en"=>'The name of the distinctive ads section in English',
         "special_hours"=>'Number of hours for featured advertisements',
+        "plan_id"=>'plan',
     ],
 
 ];

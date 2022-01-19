@@ -241,7 +241,24 @@ use Illuminate\Http\Request;
     Route::get('/chat/search_conversation/{search}/{lang}/{v}' , 'ChatController@search_conversation');
     Route::get('/chat/make_read/{message_id}/{lang}/{v}' , 'ChatController@make_read');
 
+    //order
     Route::post('/day/times/{lang}/{v}' , 'OrderController@day_times');
 
+    //cart
+    Route::get('/cart/get/{lang}/{v}' , 'OrderController@get_cart');
 
+// address
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'addresses'
+] , function($router){
+    Route::get('/{lang}/{v}' , 'AddressController@getaddress');
+    Route::post('/{lang}/{v}' , 'AddressController@addaddress');
+    Route::delete('/{lang}/{v}' , 'AddressController@removeaddress');
+    Route::post('/setdefault/{lang}/{v}' , 'AddressController@setmain');
+    Route::put('/update/{lang}/{v}' , 'AddressController@updateAddress');
+    Route::get('/getgovernment/{lang}/{v}' , 'AddressController@getgovernment')->middleware('checkguest');
+    Route::get('/getareas/{id}/{lang}/{v}' , 'AddressController@getareas')->middleware('checkguest');
+    Route::get('/details/{id}/{lang}/{v}' , 'AddressController@getdetails');
+});
 

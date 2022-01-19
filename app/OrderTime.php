@@ -1,0 +1,15 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class OrderTime extends Model
+{
+    protected $guarded = [];
+
+    public function Detail()
+    {
+        return $this->belongsTo('App\OrderDetail', 'user_id');
+    }
+}

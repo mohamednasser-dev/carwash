@@ -1,6 +1,7 @@
 <?php
 return [
     //new
+    "work_hours" => "عدد ساعات العمل",
     "save_s" => "تم الحفظ بنجاح",
     "save" => "حفظ",
     "from" => "من",
