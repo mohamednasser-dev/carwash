@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DayTime;
+use App\Order;
 use App\OrderDetail;
+use App\OrderTime;
+use App\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -37,12 +40,30 @@ class OrderController extends Controller
 
         $day = date('w', strtotime($request->selected_date));
         $data['plan_info'] = Plan::findOrFail($request->plan_id);
-        $data['available_times'] = DayTime::where('day',$day)->select('id' , 'time_from','time_to' )->get();
+        $setting = Setting::find(1);
+        $cars_service_num = $setting->cars_service_num;
+
+        $data['available_times'] = DayTime::where('day',$day)->select('id' , 'time_from','time_to' )
+            ->get()
+        ->map(function($data) use($cars_service_num){
+            $order_numbers= OrderTime::where('time_id',$data->id)->whereHas('Detail',function($q){
+                $q->where('order_id','!=',null)->where('status','pinding');
+            })->get()->count();
+
+            $data->order_numbers = $order_numbers;
+            if($order_numbers >= $cars_service_num){
+                $data->available = false;
+            }else{
+                $data->available = true;
+            }
+            return $data;
+        });
+
         $response = APIHelpers::createApiResponse(false , 200 ,  '', '' , $data, $request->lang );
         return response()->json($response , 200);
     }
 
-    public function add_to_cart(Request $request){
+    public function add_cart(Request $request){
         $now = Carbon::now()->format('Y-m-d');
         $data = $request->all();
         $validator = Validator::make($request->all() , [
@@ -70,8 +91,38 @@ class OrderController extends Controller
             $input['sub_category_id'] = $request->sub_category_id;
             $input['plan_id'] = $request->plan_id;
             $input['address_id'] = $request->address_id;
-            OrderDetail::create($input);
+            $order_details =  OrderDetail::create($input);
+            foreach ($request->selected_times as $row){
+                $times_data['time_id'] = $row;
+                $times_data['order_details_id'] = $order_details->id;
+                OrderTime::create($times_data);
+            }
             $response = APIHelpers::createApiResponse(false, 200, '', '', $data, $request->lang);
+            return response()->json($response, 200);
+        }else{
+            $response = APIHelpers::createApiResponse(true, 406, 'you should login first', 'يجب تسجيل الدخول اولا', null, $request->lang);
+            return response()->json($response, 406);
+        }
+    }
+
+    public function place_order(Request $request){
+        $user = auth()->user();
+        if($user) {
+            if ($user->active == 0) {
+                $response = APIHelpers::createApiResponse(true, 406, 'تم حظر حسابك', 'تم حظر حسابك', null, $request->lang);
+                return response()->json($response, 406);
+            }
+            $input['user_id'] = $user->id;
+            $order_details = OrderDetail::where('user_id',$user->id)->where('order_id',null)->get();
+            $total = 0;
+            foreach ($order_details as $row ){
+
+                $total = $total + $row->Plan->price;
+            }
+            $input['total'] = $total;
+            $order = Order::create($input);
+            OrderDetail::where('user_id',$user->id)->where('order_id',null)->update(['order_id'=>$order->id]);
+            $response = APIHelpers::createApiResponse(false, 200, '', '', $order, $request->lang);
             return response()->json($response, 200);
         }else{
             $response = APIHelpers::createApiResponse(true, 406, 'you should login first', 'يجب تسجيل الدخول اولا', null, $request->lang);
@@ -81,7 +132,7 @@ class OrderController extends Controller
 
     public function get_cart(Request $request){
         $user = auth()->user();
-        $data = OrderDetail::where('user_id',$user->id)->get();
+        $data = OrderDetail::where('user_id',$user->id)->where('order_id',null)->with(['Plan','Category'])->get();
         $response = APIHelpers::createApiResponse(false , 200 ,  '', '' , $data, $request->lang );
         return response()->json($response , 200);
     }

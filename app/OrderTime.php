@@ -10,6 +10,6 @@ class OrderTime extends Model
 
     public function Detail()
     {
-        return $this->belongsTo('App\OrderDetail', 'user_id');
+        return $this->belongsTo('App\OrderDetail', 'order_details_id');
     }
 }
