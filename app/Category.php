@@ -8,16 +8,13 @@ class Category extends Model
 {
     protected $fillable = ['image', 'title_en', 'title_ar', 'desc_ar','desc_en','deleted','offers_image','sort'];
 
+    protected $appends = ['next_level'] ;
     public function products() {
         return $this->hasMany('App\Product', 'category_id')->where('status', 1)->where('publish', 'Y')->where('deleted', 0);
     }
 
     public function SubCategories() {
-        return $this->hasMany('App\SubCategory', 'category_id')->where('deleted', 0)->where(function ($q) {
-            $q->has('SubCategories', '>', 0)->orWhere(function ($qq) {
-                $qq->has('Products_custom', '>', 0);
-            });
-        });
+        return $this->hasMany('App\SubCategory', 'category_id')->where('deleted', 0);
     }
 
 
@@ -37,5 +34,12 @@ class Category extends Model
             ->where('status', 1)
             ->where('deleted', 0)
             ->where('publish', 'Y');
+    }
+
+    public function getNextLevelAttribute(){
+        if(count($this->SubCategories) > 0){
+            return true;
+        }
+        return false;
     }
 }

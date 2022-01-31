@@ -167,8 +167,8 @@ class HomeController extends Controller
             $data['ads_top'] = (object)[];
         }
         $categories = Category::where('deleted', 0)
-            ->select('id', 'title_' . $lang . ' as title')
-            ->get();
+            ->select('id','image', 'title_' . $lang . ' as title')
+            ->get()->makeHidden(['SubCategories']);
         $data['categories'] = $categories;
 
         $response = APIHelpers::createApiResponse(false, 200, '', '', $data, $request->lang);
