@@ -16,7 +16,7 @@ class PlanController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['select_all_plans', 'getpricing', 'excute_pay', 'pay_sucess', 'pay_error']]);
+        $this->middleware('auth:api', ['except' => ['select_all_plans', 'getpricing', 'excute_pay','plan_details', 'pay_sucess', 'pay_error']]);
     }
 
     public function getpricing(Request $request)

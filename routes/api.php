@@ -166,8 +166,8 @@ use Illuminate\Http\Request;
     Route::post('/ad/save_new_ad/{lang}/{v}' , 'ProductController@save_first_step');
     Route::post('/ad/save_second_step/{lang}/{v}' , 'ProductController@save_second_step');
 
-    Route::get('/plans/{cat_id}/{lang}/{v}' , 'PlanController@select_all_plans');
-    Route::get('/plans/details/{plan_id}/{lang}/{v}' , 'PlanController@plan_details');
+    Route::get('/plans/{cat_id}/{lang}/{v}' , 'PlanController@select_all_plans')->middleware('checkguest');
+    Route::get('/plans/details/{plan_id}/{lang}/{v}' , 'PlanController@plan_details')->middleware('checkguest');
     Route::get('/ad/save_third_step/{ad_id}/{plan_id}/{lang}/{v}' , 'ProductController@save_third_step');
 
     Route::get('/ad/save_third_step_with_money/{ad_id}/{plan_id}/{lang}/{v}' , 'ProductController@save_third_step_with_money');
