@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DayTime extends Model
+class DayTime_old extends Model
 {
     protected $guarded = [];
     protected $table = 'day_times';
@@ -16,10 +16,5 @@ class DayTime extends Model
     public function getTimeToAttribute($time)
     {
         return date('g:i a', strtotime($time));;
-    }
-
-
-    public function OrderTimes() {
-        return $this->hasMany('App\OrderTime', 'time_id');
     }
 }

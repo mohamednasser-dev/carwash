@@ -76,6 +76,12 @@
                                     <input type="time" name="sunday_to[]" class="form-control" id="sunday_to"
                                            @if($sunday_data) value="{{$sunday_data->to}}" @endif >
                                 </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                    <label for="sunday_to"></label>
+                                    <br>
+                                    <br>
+                                    <a href="{{route('job_times.show',0)}}" class="btn btn-success">{{ __('messages.day_details') }}</a>
+                                </div>
                             </div>
                             {{-- monday --}}
                             <div class="row">

@@ -2,9 +2,10 @@
 namespace App\Http\Controllers\Admin\categories;
 
 use App\Http\Controllers\Admin\AdminController;
-use JD\Cloudder\Facades\Cloudder;
+//use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Http\Request;
 use App\Category;
+use Cloudinary;
 
 class CategoryController extends AdminController{
     // type : get -> to add new
@@ -14,14 +15,16 @@ class CategoryController extends AdminController{
     // type : post -> add new category
     public function AddPost(Request $request){
         $image_name = $request->file('image')->getRealPath();
-        Cloudder::upload($image_name, null);
-        $imagereturned = Cloudder::getResult();
-        $image_id = $imagereturned['public_id'];
-        $image_format = $imagereturned['format'];
-        $image_new_name = $image_id.'.'.$image_format;
+        $imagereturned = Cloudinary::upload($image_name);
+        $image_id = $imagereturned->getPublicId();
+        $image_format = $imagereturned->getExtension();
+        $image_new_logo = $image_id . '.' . $image_format;
+        $image_new_name = $image_new_logo;
+
         $category = new Category();
         $category->title_en = $request->title_en;
         $category->title_ar = $request->title_ar;
+
         $category->image = $image_new_name;
         $category->save();
         session()->flash('success', trans('messages.added_s'));
@@ -41,18 +44,12 @@ class CategoryController extends AdminController{
     public function EditPost(Request $request){
         $category = Category::find($request->id);
         if($request->file('image')){
-            $image = $category->image;
-            $publicId = substr($image, 0 ,strrpos($image, "."));
-            if($publicId != null ){
-                Cloudder::delete($publicId);
-            }
             $image_name = $request->file('image')->getRealPath();
-            Cloudder::upload($image_name, null);
-            $imagereturned = Cloudder::getResult();
-            $image_id = $imagereturned['public_id'];
-            $image_format = $imagereturned['format'];
-            $image_new_name = $image_id.'.'.$image_format;
-            $category->image = $image_new_name;
+            $imagereturned = Cloudinary::upload($image_name);
+            $image_id = $imagereturned->getPublicId();
+            $image_format = $imagereturned->getExtension();
+            $image_new_logo = $image_id . '.' . $image_format;
+            $category->image = $image_new_logo;
         }
         $category->title_en = $request->title_en;
         $category->title_ar = $request->title_ar;

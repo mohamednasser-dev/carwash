@@ -88,6 +88,8 @@ Route::group(['middleware'=>'language','prefix' => "admin-panel",'namespace' => 
     });
     Route::resource('payments' , 'PaymentsController');
     Route::resource('job_times' , 'JobTimesController');
+    Route::resource('orders' , 'OrderController');
+    Route::get('orders/change_status/{id}/{status}' , 'OrderController@change_status')->name('orders.change_status');
     Route::resource('cities' , 'CityController');
     Route::get('/cities/delete/{id}' , 'CityController@destroy')->name('delete.cities');
     Route::post('/cities/update/{id}' , 'CityController@update')->name('cities.update');

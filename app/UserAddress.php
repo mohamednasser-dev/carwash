@@ -25,7 +25,12 @@ class UserAddress extends Model
     ];
 
     public function area() {
-        return $this->belongsTo('App\Area', 'area_id');
+        if(session('lang')){
+            $lang = session('lang');
+        }else{
+            $lang = app()->getLocale() ;
+        }
+        return $this->belongsTo('App\Area', 'area_id')->select('id','title_'.$lang.' as title','city_id');
     }
 
     public function area_with_select() {

@@ -3,12 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 class Category extends Model
 {
     protected $fillable = ['image', 'title_en', 'title_ar', 'desc_ar','desc_en','deleted','offers_image','sort'];
 
     protected $appends = ['next_level'] ;
+
+
+
     public function products() {
         return $this->hasMany('App\Product', 'category_id')->where('status', 1)->where('publish', 'Y')->where('deleted', 0);
     }

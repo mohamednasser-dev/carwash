@@ -23,10 +23,29 @@ class JobTimesController extends AdminController
             , 'thursday_data', 'friday_data', 'saturday_data'));
     }
 
+    public function show($id)
+    {
+        $data = DayTime::where('day',$id)->get();
+        return view('admin.job_times.day_details', compact('data'));
+    }
+
+    public function edit($id)
+    {
+        $data = DayTime::findOrFail($id);
+        if($data->work_time == 1){
+            $data->work_time = 0;
+        }else{
+            $data->work_time = 1;
+        }
+        $data->save();
+        return back();
+    }
+
+
     public function store(Request $request)
     {
-        TimesOfWork::truncate();
-        DayTime::truncate();
+        TimesOfWork::getQuery()->delete();
+        DayTime::getQuery()->delete();
 
         if ($request->sunday_work) {
             if (count($request->sunday_from) > 0) {

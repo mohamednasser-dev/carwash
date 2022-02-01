@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use JD\Cloudder\Facades\Cloudder;
+//use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Http\Request;
 use App\Setting;
+use Cloudinary;
 
 class SettingController extends AdminController{
 
@@ -16,17 +17,29 @@ class SettingController extends AdminController{
     // post setting
     public function PostSetting(Request $request){
         $setting = Setting::find(1);
+//        if($request->file('logo')){
+//            $logo = $setting->logo;
+//            $publicId = substr($logo , 0 , strrpos($logo , "."));
+//            Cloudder::delete($publicId);
+//            $logo_name = $request->file('logo')->getRealPath();
+//            Cloudder::upload($logo_name , null);
+//            $logoreturned = Cloudder::getResult();
+//            $logo_id = $logoreturned['public_id'];
+//            $logo_format = $logoreturned['format'];
+//            $logo_new_name = $logo_id.'.'.$logo_format;
+//            $setting->logo = $logo_new_name;
+//
+//
+//        }
         if($request->file('logo')){
-            $logo = $setting->logo;
-            $publicId = substr($logo , 0 , strrpos($logo , "."));
-            Cloudder::delete($publicId);
-            $logo_name = $request->file('logo')->getRealPath();
-            Cloudder::upload($logo_name , null);
-            $logoreturned = Cloudder::getResult();
-            $logo_id = $logoreturned['public_id'];
-            $logo_format = $logoreturned['format'];
-            $logo_new_name = $logo_id.'.'.$logo_format;
-            $setting->logo = $logo_new_name;
+
+            $logo = $request->file('logo')->getRealPath();
+            $imagereturned = Cloudinary::upload($logo);
+            $image_id = $imagereturned->getPublicId();
+            $image_format = $imagereturned->getExtension();
+            $image_new_logo = $image_id . '.' . $image_format;
+            $setting->logo = $image_new_logo;
+
         }
         $setting->app_name_en = $request->app_name_en;
         $setting->app_name_ar = $request->app_name_ar;
