@@ -248,6 +248,9 @@ use Illuminate\Http\Request;
     Route::get('/cart/get/{lang}/{v}' , 'OrderController@get_cart');
     Route::post('/cart/add/{lang}/{v}' , 'OrderController@add_cart');
     Route::post('/order/place/{lang}/{v}' , 'OrderController@place_order');
+    Route::get('/order/my_orders/{lang}/{v}' , 'OrderController@my_orders');
+    Route::get('/order/details/{id}/{lang}/{v}' , 'OrderController@order_details');
+    Route::get('/order/item/details/{id}/{lang}/{v}' , 'OrderController@item_details');
 
 // address
 Route::group([

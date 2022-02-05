@@ -88,5 +88,12 @@ class OrderController extends AdminController
         return back();
     }
 
+    public function main_order_change_status($id,$status)
+    {
+        Order::findOrFail($id)->update(['status'=>$status]);
+        session()->flash('success', trans('messages.status_changed'));
+        return back();
+    }
+
 
 }

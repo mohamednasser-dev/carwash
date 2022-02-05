@@ -1,6 +1,7 @@
 <?php
 return [
     //new
+    "timing" => "التوقيت",
     "extra_details" => "ارشادات اضافية",
     "address_title" => "اسم العنوان",
     "piece" => "قطعة",

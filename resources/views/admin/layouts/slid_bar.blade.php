@@ -86,13 +86,7 @@
                     <li class="menu job_times">
                         <a href="{{route('job_times.index')}}" class="dropdown-toggle first-link">
                             <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-map">
-                                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-                                    <line x1="8" y1="2" x2="8" y2="18"></line>
-                                    <line x1="16" y1="6" x2="16" y2="22"></line>
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pie-chart"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
                                 <span>{{ __('messages.times_of_work') }}</span>
                             </div>
                         </a>
@@ -102,13 +96,7 @@
                         <li class="menu orders">
                             <a href="{{route('orders.index')}}" class="dropdown-toggle first-link">
                                 <div class="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-map">
-                                        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-                                        <line x1="8" y1="2" x2="8" y2="18"></line>
-                                        <line x1="16" y1="6" x2="16" y2="22"></line>
-                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                                     <span>{{ __('messages.orders') }}</span>
                                 </div>
                             </a>

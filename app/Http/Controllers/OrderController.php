@@ -6,6 +6,7 @@ use App\DayTime;
 use App\Order;
 use App\OrderDetail;
 use App\OrderTime;
+use App\Plan_details;
 use App\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -120,6 +121,38 @@ class OrderController extends Controller
         return response()->json($response, 200);
     }
 
+    //orders
+    public function my_orders(Request $request)
+    {
+        $user = auth()->user();
+        Session::put('lang', $request->lang);
+        $data = Order::where('user_id', $user->id)->orderBy('created_at','desc')->get();
+        $response = APIHelpers::createApiResponse(false, 200, '', '', $data, $request->lang);
+        return response()->json($response, 200);
+    }
+
+    public function order_details(Request $request, $id)
+    {
+        $user = auth()->user();
+        Session::put('lang', $request->lang);
+        $data['order'] = Order::whereId($id)->first();
+        $first_detail = OrderDetail::with('Address')->where('order_id', $id)->first();
+        $data['order_address'] = $first_detail->Address;
+        $data['order_details'] = OrderDetail::with(['Plan', 'Category','Address'])->where('order_id', $id)->get();
+        $response = APIHelpers::createApiResponse(false, 200, '', '', $data, $request->lang);
+        return response()->json($response, 200);
+    }
+
+    public function item_details(Request $request, $id)
+    {
+        $user = auth()->user();
+        Session::put('lang', $request->lang);
+        $data['details'] = OrderDetail::with(['Times','Plan', 'Category','Address'])->where('id', $id)->first();
+        $data['plan_details'] = Plan_details::select('id', 'title_' . $request->lang . ' as title')->where('plan_id', $data['details']->plan_id)->get();
+        $response = APIHelpers::createApiResponse(false, 200, '', '', $data, $request->lang);
+        return response()->json($response, 200);
+    }
+
     public function place_order(Request $request)
     {
         Session::put('lang', $request->lang);
@@ -137,8 +170,11 @@ class OrderController extends Controller
                     $total = $total + $row->Plan->price;
                 }
                 $input['total'] = $total;
+//             TODO : Eslam i want here to test all times before save order because of if other person take last car ship .....
+//             i want first to ask Eng/nouh what is good cycle for this
+//          End TODO
                 $order = Order::create($input);
-                if($order){
+                if ($order) {
                     OrderDetail::where('user_id', $user->id)->where('order_id', null)->update(['order_id' => $order->id]);
                 }
                 $response = APIHelpers::createApiResponse(false, 200, '', '', $order, $request->lang);

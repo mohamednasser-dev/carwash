@@ -20,6 +20,7 @@
                             <th class="text-center">{{ __('messages.category') }}</th>
                             <th class="text-center">{{ __('messages.order_date') }}</th>
                             <th class="text-center">{{ __('messages.plan') }}</th>
+                            <th class="text-center">{{ __('messages.timing') }}</th>
                             <th class="text-center">{{ __('messages.address_details') }}</th>
                             <th class="text-center">{{ __('messages.status') }}</th>
                         </tr>
@@ -36,6 +37,13 @@
                                 <td class="text-center blue-color">{{  $row->order_date }}</td>
                                 <td class="text-center blue-color">{{  $row->Plan->title  }}
                                     ( {{$row->Plan->price}} )
+                                </td>
+                                <td class="text-center blue-color">
+                {{--  TODO : Eslam i want here to diplay first and last time (optional) and contact Eng/nouh for details  --}}
+                                   @foreach($row->Times as $time)
+                                       {{$time->Time_details->time_from}} -   {{$time->Time_details->time_to}}
+                                       <br>
+                                    @endforeach
                                 </td>
                                 <td class="text-center blue-color"><a
                                         href="{{ route('orders.edit', $row->address_id) }}"><i

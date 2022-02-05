@@ -7,9 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class OrderDetail extends Model
 {
     protected $guarded = [];
+    protected $hidden = ['deleted'];
     public function User()
     {
         return $this->belongsTo('App\User', 'user_id');
+    }
+    public function Address()
+    {
+        return $this->belongsTo('App\UserAddress', 'address_id');
+    }
+    public function Times() {
+        return $this->hasMany('App\OrderTime', 'order_details_id')->with('Time_details');
+    }
+
+    public function Last_time()
+    {
+        return $this->belongsTo('App\OrderTime', 'order_details_id')->with('Time');
     }
     public function Plan()
     {
@@ -18,7 +31,7 @@ class OrderDetail extends Model
         }else{
             $lang = app()->getLocale() ;
         }
-        return $this->belongsTo('App\Plan', 'plan_id')->select('id','title_'.$lang.' as title','price');
+        return $this->belongsTo('App\Plan', 'plan_id')->select('id','title_'.$lang.' as title','price','work_hours');
     }
     public function Web_Plan()
     {

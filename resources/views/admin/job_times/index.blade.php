@@ -80,7 +80,8 @@
                                     <label for="sunday_to"></label>
                                     <br>
                                     <br>
-                                    <a href="{{route('job_times.show',0)}}" class="btn btn-success">{{ __('messages.day_details') }}</a>
+                                    <a href="{{route('job_times.show',0)}}"
+                                       class="btn btn-success">{{ __('messages.day_details') }}</a>
                                 </div>
                             </div>
                             {{-- monday --}}
@@ -110,6 +111,13 @@
                                     <input type="time" name="monday_to[]" class="form-control"
                                            @if($monday_data) value="{{$monday_data->to}}" @endif >
                                 </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                    <label for="sunday_to"></label>
+                                    <br>
+                                    <br>
+                                    <a href="{{route('job_times.show',1)}}"
+                                       class="btn btn-success">{{ __('messages.day_details') }}</a>
+                                </div>
                             </div>
                             {{-- tuesday --}}
                             <div class="row">
@@ -137,6 +145,13 @@
                                     <label for="tuesday_to">{{ __('messages.to') }}</label>
                                     <input type="time" name="tuesday_to[]" class="form-control"
                                            @if($tuesday_data) value="{{$tuesday_data->to}}" @endif >
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                    <label for="sunday_to"></label>
+                                    <br>
+                                    <br>
+                                    <a href="{{route('job_times.show',2)}}"
+                                       class="btn btn-success">{{ __('messages.day_details') }}</a>
                                 </div>
                             </div>
                             {{-- wednesday --}}
@@ -167,6 +182,13 @@
                                     <input type="time" name="wednesday_to[]" class="form-control"
                                            @if($wednesday_data) value="{{$wednesday_data->to}}" @endif >
                                 </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                    <label for="sunday_to"></label>
+                                    <br>
+                                    <br>
+                                    <a href="{{route('job_times.show',3)}}"
+                                       class="btn btn-success">{{ __('messages.day_details') }}</a>
+                                </div>
                             </div>
                             {{-- thursday --}}
                             <div class="row">
@@ -196,6 +218,13 @@
                                     <input type="time" name="thursday_to[]" class="form-control"
                                            @if($thursday_data) value="{{$thursday_data->to}}" @endif >
                                 </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                    <label for="sunday_to"></label>
+                                    <br>
+                                    <br>
+                                    <a href="{{route('job_times.show',4)}}"
+                                       class="btn btn-success">{{ __('messages.day_details') }}</a>
+                                </div>
                             </div>
                             {{-- friday --}}
                             <div class="row">
@@ -223,6 +252,13 @@
                                     <label for="friday_to">{{ __('messages.to') }}</label>
                                     <input type="time" name="friday_to[]" class="form-control"
                                            @if($friday_data) value="{{$friday_data->to}}" @endif >
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                    <label for="sunday_to"></label>
+                                    <br>
+                                    <br>
+                                    <a href="{{route('job_times.show',5)}}"
+                                       class="btn btn-success">{{ __('messages.day_details') }}</a>
                                 </div>
                             </div>
                             {{-- saturday --}}
@@ -252,6 +288,13 @@
                                     <label for="saturday_to">{{ __('messages.to') }}</label>
                                     <input type="time" name="saturday_to[]" class="form-control"
                                            @if($saturday_data) value="{{$saturday_data->to}}" @endif >
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                    <label for="sunday_to"></label>
+                                    <br>
+                                    <br>
+                                    <a href="{{route('job_times.show',6)}}"
+                                       class="btn btn-success">{{ __('messages.day_details') }}</a>
                                 </div>
                             </div>
                         </section>
