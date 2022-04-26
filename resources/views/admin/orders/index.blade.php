@@ -57,7 +57,7 @@
                                                    style="color: green; text-align: center;">{{ __('messages.done') }}</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item"
-                                                   href="{{route('main_order.change_status',['id'=>$row->id,'status'=>'rejectedd'])}}"
+                                                   href="{{route('main_order.change_status',['id'=>$row->id,'status'=>'rejected'])}}"
                                                    style="color: red; text-align: center;">{{ __('messages.reject') }}</a>
                                             </div>
                                         </div>
