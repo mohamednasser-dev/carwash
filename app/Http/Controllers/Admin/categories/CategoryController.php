@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 //use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Http\Request;
 use App\Category;
-use Cloudinary;
+use JD\Cloudder\Facades\Cloudder;
 
 class CategoryController extends AdminController{
     // type : get -> to add new
@@ -15,9 +15,10 @@ class CategoryController extends AdminController{
     // type : post -> add new category
     public function AddPost(Request $request){
         $image_name = $request->file('image')->getRealPath();
-        $imagereturned = Cloudinary::upload($image_name);
-        $image_id = $imagereturned->getPublicId();
-        $image_format = $imagereturned->getExtension();
+        Cloudder::upload($image_name, null);
+        $imagereturned = Cloudder::getResult();
+        $image_id = $imagereturned['public_id'];
+        $image_format = $imagereturned['format'];
         $image_new_logo = $image_id . '.' . $image_format;
         $image_new_name = $image_new_logo;
 
@@ -45,9 +46,10 @@ class CategoryController extends AdminController{
         $category = Category::find($request->id);
         if($request->file('image')){
             $image_name = $request->file('image')->getRealPath();
-            $imagereturned = Cloudinary::upload($image_name);
-            $image_id = $imagereturned->getPublicId();
-            $image_format = $imagereturned->getExtension();
+            Cloudder::upload($image_name, null);
+            $imagereturned = Cloudder::getResult();
+            $image_id = $imagereturned['public_id'];
+            $image_format = $imagereturned['format'];
             $image_new_logo = $image_id . '.' . $image_format;
             $category->image = $image_new_logo;
         }

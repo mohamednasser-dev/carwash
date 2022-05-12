@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 //use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Http\Request;
 use App\SubCategory;
-use Cloudinary;
+use JD\Cloudder\Facades\Cloudder;
 
 class SubCategoryController extends AdminController
 {
@@ -32,9 +32,10 @@ class SubCategoryController extends AdminController
             ]);
         if ($request->file('image')) {
             $image_name = $request->file('image')->getRealPath();
-            $imagereturned = Cloudinary::upload($image_name);
-            $image_id = $imagereturned->getPublicId();
-            $image_format = $imagereturned->getExtension();
+            Cloudder::upload($image_name, null);
+            $imagereturned = Cloudder::getResult();
+            $image_id = $imagereturned['public_id'];
+            $image_format = $imagereturned['format'];
             $image_new_logo = $image_id . '.' . $image_format;
             $data['image'] = $image_new_logo;
         }
@@ -87,9 +88,10 @@ class SubCategoryController extends AdminController
             ]);
         if ($request->file('image')) {
             $image_name = $request->file('image')->getRealPath();
-            $imagereturned = Cloudinary::upload($image_name);
-            $image_id = $imagereturned->getPublicId();
-            $image_format = $imagereturned->getExtension();
+            Cloudder::upload($image_name, null);
+            $imagereturned = Cloudder::getResult();
+            $image_id = $imagereturned['public_id'];
+            $image_format = $imagereturned['format'];
             $image_new_logo = $image_id . '.' . $image_format;
             $data['image'] = $image_new_logo;
         }

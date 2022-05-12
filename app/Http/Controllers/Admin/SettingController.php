@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 //use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Http\Request;
 use App\Setting;
-use Cloudinary;
+use JD\Cloudder\Facades\Cloudder;
 
 class SettingController extends AdminController{
 
@@ -34,9 +34,10 @@ class SettingController extends AdminController{
         if($request->file('logo')){
 
             $logo = $request->file('logo')->getRealPath();
-            $imagereturned = Cloudinary::upload($logo);
-            $image_id = $imagereturned->getPublicId();
-            $image_format = $imagereturned->getExtension();
+            Cloudder::upload($logo, null);
+            $imagereturned = Cloudder::getResult();
+            $image_id = $imagereturned['public_id'];
+            $image_format = $imagereturned['format'];
             $image_new_logo = $image_id . '.' . $image_format;
             $setting->logo = $image_new_logo;
 
