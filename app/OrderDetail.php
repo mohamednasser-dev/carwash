@@ -31,7 +31,7 @@ class OrderDetail extends Model
         }else{
             $lang = app()->getLocale() ;
         }
-        return $this->belongsTo('App\Plan', 'plan_id')->select('id','title_'.$lang.' as title','price','work_hours');
+        return $this->belongsTo('App\Plan', 'plan_id')->select('id','title_'.$lang.' as title','price','work_hours', 'cat_id');
     }
     public function Web_Plan()
     {
@@ -45,7 +45,7 @@ class OrderDetail extends Model
         }else{
             $lang = app()->getLocale() ;
         }
-        return $this->belongsTo('App\Category', 'category_id')->select('id','title_'.$lang.' as title');
+        return $this->belongsTo('App\Category', 'category_id')->select('id','title_'.$lang.' as title', 'image');
     }
 
     public function SubCategory()

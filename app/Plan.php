@@ -20,3 +20,4 @@ class Plan extends Model
         return $this->belongsTo('App\Category', 'cat_id');
     }
 }
+
