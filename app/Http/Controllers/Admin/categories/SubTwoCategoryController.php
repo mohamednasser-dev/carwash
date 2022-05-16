@@ -14,10 +14,12 @@ class SubTwoCategoryController extends AdminController
     {
 
     }
+    
     public function create($id)
     {
         return view('admin.categories.sub_category.sub_two_category.create',compact('id'));
     }
+
     public function store(Request $request)
     {
         $data = $this->validate(\request(),

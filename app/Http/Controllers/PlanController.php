@@ -109,8 +109,10 @@ class PlanController extends Controller
         $lang = $request->lang;
         Session::put('api_lang', $lang);
         $data = Plan::with('Details')
-            ->where('cat_id', $cat_id)
-            ->orwhere('cat_id', 'all')
+            ->where(function($q) use ($cat_id) {
+                $q->where('cat_id', $cat_id)
+                ->orwhere('cat_id', 'all');
+            })
             ->where('status', 'show')
             ->where('deleted', '0')
             ->select('id', 'title_' . $lang . ' as title', 'price','work_hours')
