@@ -20,6 +20,7 @@ use App\Favorite;
 use App\Setting;
 use App\Product;
 use App\User;
+use App\Visitor;
 
 class UserController extends Controller
 {
@@ -238,13 +239,20 @@ class UserController extends Controller
             return response()->json($response, 406);
         }
 
+        if (!$request->header('uniqueid')) {
+            $response = APIHelpers::createApiResponse(true , 406 ,  'uniqueid is required header', 'uniqueid is required header' , null, $request->lang );
+            return response()->json($response , 406);
+        }
         $user_id = $user->id;
-        $notifications_ids = UserNotification::where('user_id', $user_id)->orderBy('id', 'desc')->select('notification_id')->get();
+        $visitor = Visitor::where('unique_id', $request->header('uniqueid'))->where('user_id', $user_id)->select('id')->first();
+        // dd($visitor);
+        $notifications_ids = UserNotification::where('user_id', $user_id)->where('visitor_id', $visitor->id)->orderBy('id', 'desc')->select('notification_id')->get();
         $notifications = [];
         for ($i = 0; $i < count($notifications_ids); $i++) {
             $notifications[$i] = Notification::select('id', 'title', 'body', 'image', 'created_at')->find($notifications_ids[$i]['notification_id']);
         }
         $data['notifications'] = $notifications;
+
         $response = APIHelpers::createApiResponse(false, 200, '', '', $data['notifications'], $request->lang);
         return response()->json($response, 200);
     }
