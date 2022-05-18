@@ -41,14 +41,15 @@ class VisitorController extends Controller
         $last_visitor = Visitor::where('unique_id' , $request->unique_id)->first();
         if($last_visitor){
             $visitor = $last_visitor;
+            $visitor->unique_id = $request->unique_id;
+            $visitor->fcm_token = $request->fcm_token;
         }else{
             $visitor = new Visitor();
             $visitor->unique_id = $request->unique_id;
             $visitor->fcm_token = $request->fcm_token;
             $visitor->type = $request->type;
-            $visitor->save();
         }
-
+        $visitor->save();
 
         $response = APIHelpers::createApiResponse(false , 200 , '' , '' , $visitor , $request->lang);
         return response()->json($response , 200);
